@@ -1,0 +1,88 @@
+function [I] = plotWaterfall(filename,indspace,xwindow,ywindow,movewindow,t_final)
+
+if nargin<7
+    caz = 3.520000000000001e+02, 
+    cel  =35;
+end
+
+%%% Load data and clean 
+load(filename)
+M = numel(t_data);
+for p = M:-1:M-20
+    zeta = abs(zeta_data(:,p));
+    if max(zeta)>10 | sum(isnan(zeta))>0
+        zeta_data = zeta_data(:,1:end-1);
+        d_data = d_data(:,1:end-1);
+        w_data = w_data(:,1:end-1);
+        t_data = t_data(1:end-1);
+    end    
+end
+
+
+%%% Select t data to use, and extract zeta(x,t) from data
+IND = numel(t_data):-indspace:1; %IND=IND(end:-1:1)
+%IND = 1:indspace:sum(t_data<=t_final);
+t=t_data(IND);
+Z = 1/2*(d_data(:,IND)'-H2+H1);
+
+%%% Build mesh grid using x,t
+[X,T] = meshgrid(x,t);
+for n = 1:length(t)
+    ti=t(n);
+    if movewindow
+        xshift = c1*ti+opts.WaveOneLocation;
+    else
+        xshift=0;
+    end
+    plot3(x-xshift,t(n)*ones(size(x)),Z(n,:),'k');
+    hold on;
+    xlim(xwindow)
+    zlim(ywindow)
+end
+
+if exist('caz')
+    view(caz,cel)
+end
+%{
+
+view([-37.5 30])
+
+%xlim([-20,20])
+
+xlabel('$X$')
+ylabel('$t$')
+zlabel('$\zeta$','Rotation',0)
+
+
+subplot(1,2,2);
+colour='k';
+
+%%% Sweep D
+D=-H:0.01:H;
+h2 = (H+D)/2
+h1 = (H-D)/2;
+g1 = (r2-r1)*g;
+
+%g1=g;
+Wc = (g1*h1.*h2.*H.^2./(r1.*h2.^3+r2.*h1.^3)).^.5;
+plot(D,Wc,colour)
+hold on
+plot(D,-Wc,colour)
+
+plot(d_data(:,1),w_data(:,1),'b')
+
+%Wc_hyp = ((1-r*D)/(1-r^2)).^.5
+
+%plot(D,Wc_hyp,colour,'Linestyle','--')
+%hold on
+%plot(D,-Wc_hyp,colour,'Linestyle','--')
+%plot([D(1),D(1)],[Wc_hyp(1),-Wc_hyp(1)],colour,'Linestyle','--')
+%plot([D(end),D(end)],[Wc_hyp(end),-Wc_hyp(end)],colour,'Linestyle','--')
+
+xlim([-1.1,1.1])
+%ylim([-max(Wc_hyp)-.1,max(Wc_hyp)+.1])
+%title(['r=' num2str(r)])
+xlabel('D')
+ylabel('W','Rotation',0)
+
+%}
