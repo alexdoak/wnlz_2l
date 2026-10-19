@@ -2,6 +2,9 @@
 *.avi
 *.mat
 
+# Zip files for sending colleagues
+*.zip
+
 # Saved interactive runs (keep only the paper presets)
 configs/*.json
 
@@ -15,3 +18,5 @@ workspaces/
 core/spectral/
 core/GMRES/
 videos/
+legacy/
+theory/tests

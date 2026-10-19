@@ -1,0 +1,14 @@
+STEP:
+
+1. Fix W, vary A such that we change regimes.
+
+2. Replace tanh with CLC, sensitivity to bathymetry shape?
+
+3. Entirely in other regime (depression waves incoming).
+
+4. Reduce ampltiude below 0.05? Better KdV agreement?
+
+OVERTAKE/COLLIDE:
+
+5. Tabletop collide/overtaking with small of opposite polarity
+
