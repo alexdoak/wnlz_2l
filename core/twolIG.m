@@ -10,7 +10,7 @@ else
     M=numel(li.c);
 end
 zeta = li.y{M};
-x_h=x(1:(numel(x)/2+1))
+x_h=x(1:(numel(x)/2+1));
 effective_wavelength = 2*abs(trapz(x_h,y)/max(abs(y)));
 
 if opts.Bathymetry.on
